@@ -11,8 +11,8 @@ do
        cd $repoName
        (git branch -r | sed -n '/->/!s#^  origin/##p' && echo master) | xargs -L1 git checkout
        git remote add dxcgithub git@github.houston.entsvcs.net:vpc-propel/${repoName}.git
-       curl -XDELETE -H "Authorization: token f637dcc729d22bdaa6a3519336475b912f3efc69" https://github.houston.entsvcs.net/api/v3/repos/vpc-propel/${repoName}
-       curl -XPOST -H "Authorization: token f637dcc729d22bdaa6a3519336475b912f3efc69" https://github.houston.entsvcs.net/api/v3/orgs/vpc-propel/repos -d '{"name":"'${repoName}'", "description":"'${repoName}'"}' 1>/dev/null 2>&1
+       curl -XDELETE -H "Authorization: token {your personal github token}" https://{your git server hostname}/api/v3/repos/{your orgnization}/${repoName}
+       curl -XPOST -H "Authorization: token {your personal github token}" https://{your git server hostname}/api/v3/orgs/{your orgnization}/repos -d '{"name":"'${repoName}'", "description":"'${repoName}'"}' 1>/dev/null 2>&1
        git push --all dxcgithub
        git push --tags dxcgithub
        cd ..
