@@ -1,5 +1,9 @@
 #!/bin/bash
 
+orgname=xxx
+fqdn=xxx
+token=xxx
+
 for sourceURL in `cat repos.conf`
 do
     projectName=`echo $sourceURL|awk -F "/" {'print $5'}`
@@ -10,9 +14,9 @@ do
        git clone $sourceURL
        cd $repoName
        (git branch -r | sed -n '/->/!s#^  origin/##p' && echo master) | xargs -L1 git checkout
-       git remote add dxcgithub git@github.houston.entsvcs.net:vpc-propel/${repoName}.git
-       curl -XDELETE -H "Authorization: token {your personal github token}" https://{your git server hostname}/api/v3/repos/{your orgnization}/${repoName}
-       curl -XPOST -H "Authorization: token {your personal github token}" https://{your git server hostname}/api/v3/orgs/{your orgnization}/repos -d '{"name":"'${repoName}'", "description":"'${repoName}'"}' 1>/dev/null 2>&1
+       git remote add dxcgithub git@github.houston.entsvcs.net:${orgname}/${repoName}.git
+       curl -XDELETE -H "Authorization: token ${token}" https://${fqdn}/api/v3/repos/${orgname}/${repoName}
+       curl -XPOST -H "Authorization: token ${token}" https://${fqdn}/api/v3/orgs/${orgname}/repos -d '{"name":"'${repoName}'", "description":"'${repoName}'"}' 1>/dev/null 2>&1
        git push --all dxcgithub
        git push --tags dxcgithub
        cd ..
